@@ -14,6 +14,7 @@ let currentVolume = 0.8;
 let isPlaying = false;
 let currentSong = null;
 let playlistVisible = true;
+let settingsVisible = false;
 let useAutoDj = false;
 let localMode = true;
 let showBigCover = true;
@@ -39,6 +40,17 @@ function togglePlaylist() {
     console.log("visible:", playlistVisible,
               "has .hidden:", playlist?.classList.contains("hidden"),
               "inline display:", playlist?.style.display || "(none)");
+}
+
+function toggleSettings() {
+    settingsVisible = !settingsVisible;
+    if (settingsVisible) {
+        document.getElementById("playlist").classList.toggle("hidden", true);
+    } else {
+        document.getElementById("playlist").classList.toggle("hidden", !playlistVisible);
+    }
+    document.getElementById("settings").classList.toggle("hidden", !settingsVisible);
+
 }
 
 function toggleAutoDj() {

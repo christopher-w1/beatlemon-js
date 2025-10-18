@@ -11,7 +11,7 @@ body, html {
     --symbol-color: rgba(255,255,255, 0.5);
     --background-color : rgb(25, 25, 25);
     --text-color: rgb(255, 255, 255);
-    --text-color-2: rgb(255, 255, 255);
+    --text-color-2: rgb(200, 200, 200);
     --highlight-color: rgb(255, 255, 255);
 
     box-sizing: border-box;
@@ -57,6 +57,8 @@ body, html {
 }
 
 #music-browser {
+    grid-column: 1;
+    grid-row: 2;
     background-color: transparent;
     padding: 16px;
     margin: 0;
@@ -69,6 +71,8 @@ body, html {
 }
 
 #playlist {
+    grid-column: 2;
+    grid-row: 2;
     display: grid;
     gap: 0px; 
     background-color: var(--panel-color);
@@ -79,6 +83,35 @@ body, html {
     grid-template-rows: auto 1fr auto;
 }
 #playlist.hidden { display: none; }
+
+#settings {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 16px; 
+    background-color: var(--panel-color);
+    border-left: 1px solid var(--divider-color);
+    padding: 16px;
+    margin: 0px;
+    width: 270px;
+}
+
+#settings.hidden { display: none; }
+
+.settings-item { 
+    font-size: 14px;
+    color: var(--text-color-2);
+    display: grid;
+    padding-inline: 8px;
+    grid-template-columns: 1fr auto;
+    background-color: var(--bar-color);
+    border-radius: 4px;
+}
+
+.settings-item svg {
+    width: 14px;
+}
 
 #player-panel {
     grid-column: 1 / -1;

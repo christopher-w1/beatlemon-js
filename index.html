@@ -31,6 +31,9 @@
         </div>
         <span id="user-greeting">Hello, <b class="user-name">unknown user</b><b>!</b></span>
         <div class="button-row">
+            <button id="settings-btn" onclick="toggleSettings()">
+                <i data-lucide="settings">Settings</i>
+            </button>
             <button id="logout-btn" onclick="logout()">
                 <i data-lucide="log-out">Logout</i>
             </button>
@@ -71,6 +74,14 @@
         <div id="playlist-item-container"></div>
         <div id="sidebar-cover" class="hidden">
             <img src="static/beat-lemon2.png">
+        </div>
+    </div>
+
+    <div id="settings" class="hidden">
+        <div>Settings</div>
+        <div class="settings-item">
+            <p>Use lists instead of cards</p>
+            <button><i data-lucide="square"></i></button>
         </div>
     </div>
 
