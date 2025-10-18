@@ -6,7 +6,7 @@
   <link href="static/style.css" rel="stylesheet" />
   <link href="static/index.css" rel="stylesheet" />
 </head>
-<body>
+<body class="">
   <script src="static/check_auth.js"></script>
   <script src="static/api.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -15,43 +15,54 @@
   <div id="main-container">
 
     <div id="top-panel">
-    <div class="button-row">
-        <button id="browse-music-btn" onclick="showRecommendations()">
-        <i data-lucide="compass">Browse</i> 
-        </button>
-        <button id="show-search-btn" onclick="showSearch()">
-        <i data-lucide="search">Search</i> 
-        </button>
-        <button id="show-library-btn" onclick="showLibrary()">
-        <i data-lucide="library">Library</i> 
-        </button>
-    </div>
-    <span id="user-greeting">Hello, <b class="user-name">unknown user</b><b>!</b></span>
-    <div class="button-row">
-        <button id="toggle-playlist-btn" onclick="togglePlaylist()">
-            <i data-lucide="list">Toggle Playlist</i>
-        </button>
-        <button id="logout-btn" onclick="logout()">
-            <i data-lucide="log-out">Logout</i>
-        </button>
-    </div>
+        <div class="button-row">
+            <button id="browse-music-btn" onclick="showView('recommendations-view')">
+            <i data-lucide="compass">Browse</i> 
+            </button>
+            <button id="show-search-btn" onclick="showView('search-view')">
+            <i data-lucide="search">Search</i> 
+            </button>
+            <button id="show-library-btn" onclick="showView('library-view')">
+            <i data-lucide="library">Library</i> 
+            </button>
+            <button id="show-playback-btn" onclick="showView('playback-view')">
+            <i data-lucide="circle-play">Library</i> 
+            </button>
+        </div>
+        <span id="user-greeting">Hello, <b class="user-name">unknown user</b><b>!</b></span>
+        <div class="button-row">
+            <button id="logout-btn" onclick="logout()">
+                <i data-lucide="log-out">Logout</i>
+            </button>
+        </div>
     </div>
     
 
     <div id="music-browser">
-        <div id="browser-description">
-            Search the Library
-        </div>
-        <div id="search-panel">
-            <div id="search-bar">
-                <input id="search-input" placeholder="Find a song...">
-                <button id="search-button">
-                    <i data-lucide="search">Search</i> 
-                </button>
+        <div id="search-view" class="">
+            <div id="browser-description">
+                Search the Library
+            </div>
+            <div id="search-panel">
+                <div id="search-bar">
+                    <input id="search-input" placeholder="Find a song...">
+                    <button id="search-button">
+                        <i data-lucide="search">Search</i> 
+                    </button>
+                </div>
+            </div>
+            <div id="search-results">
+
             </div>
         </div>
-        <div id="search-results">
 
+        <div id="recommendations-view" class="hidden">
+        </div>
+
+        <div id="library-view" class="hidden">
+        </div>
+
+        <div id="playback-view" class="hidden">
         </div>
     </div>
 
@@ -85,6 +96,10 @@
             <button id="auto-dj-btn" onclick="toggleAutoDj()" class="mini-btn" title="Auto-DJ">
                 <i data-lucide="cpu"></i>
             </button>
+            
+        <button id="toggle-playlist-btn" onclick="togglePlaylist()" class="mini-btn active" title="Show/Hide Playlist">
+            <i data-lucide="list">Toggle Playlist</i>
+        </button>
             <button id="mute-btn">
                 <i data-lucide="volume">Mute</i>
             </button>

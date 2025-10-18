@@ -13,7 +13,7 @@ let currentPlayingIndex = -1;
 let currentVolume = 0.8;
 let isPlaying = false;
 let currentSong = null;
-let playlistVisible = false;
+let playlistVisible = true;
 let useAutoDj = false;
 let localMode = true;
 let showBigCover = true;
@@ -50,6 +50,31 @@ function toggleAutoDj() {
 function toggleCover() {
     showBigCover = !showBigCover;
     document.getElementById("sidebar-cover").classList.toggle("hidden", !showBigCover);
+}
+
+function showView(viewId) {
+    const views = [
+        "search-view",
+        "recommendations-view",
+        "library-view",
+        "playback-view"
+    ];
+
+    for (const id of views) {
+        const el = document.getElementById(id);
+        if (el) el.classList.add("hidden");
+    }
+
+    const active = document.getElementById(viewId);
+    if (active) active.classList.remove("hidden");
+
+    document.querySelectorAll("#top-panel button").forEach(btn =>
+        btn.classList.remove("active")
+    );
+    const clicked = document.querySelector(
+        `#top-panel button[onclick*="${viewId.split('-')[0]}"]`
+    );
+    if (clicked) clicked.classList.add("active");
 }
 
 // ----------------- SONG SEARCH ------------------
@@ -127,6 +152,13 @@ function renderSearchResults(results) {
             <button class="mini-btn" title="Play" onclick=startPlaybackFromSong("${song.hash}")><i data-lucide="play">P</i></button>
             <button class="mini-btn" title="Add"  onclick=enqueueSong("${song.hash}")><i data-lucide="plus">+</i></button>
             <button class="mini-btn" title="Info"><i data-lucide="info">i</i></button>
+        </div>
+        <div class="classic-info">
+        <p>${song.title}</p> 
+        <p>${artist}</p> 
+        <p>${song.album}</p> 
+        <p>${release_year}</p>
+        <p>${duration}</p> 
         </div>
         `;
 
@@ -467,7 +499,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initSearch();
     initAudioPlayer();
     initProgressBar();
-    togglePlaylist();
     toggleAutoDj();
     apiPing = api_get_ping();
 });
