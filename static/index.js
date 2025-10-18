@@ -16,31 +16,40 @@ let currentSong = null;
 let playlistVisible = false;
 let useAutoDj = false;
 let localMode = true;
+let showBigCover = true;
 
 
 // ----------------- UI Functions -----------------
 
 function updateUserGreeting() {
     const username = localStorage.getItem("username") || "unknown user";
-    document.querySelector(".user-name").textContent = username;
+    document.getElementById("user-greeting").innerHTML = `Hello, <b class="user-name">${username}</b><b>!</b>`;
+}
+
+function showMessage(message) {
+    document.getElementById("user-greeting").innerHTML = `${message}`;
 }
 
 function togglePlaylist() {
-    playlistVisible = (!playlistVisible);
+    playlistVisible = !playlistVisible;
     const playlist = document.getElementById("playlist");
-    const playlistToggleBtn =  document.getElementById("toggle-playlist-btn");
+    const playlistToggleBtn = document.getElementById("toggle-playlist-btn");
     playlistToggleBtn.classList.toggle("active", playlistVisible);
-    if (playlistVisible) {
-        playlist.style="display:block;";
-    } else {
-        playlist.style="display:none;";
-    }
+    playlist.classList.toggle("hidden", !playlistVisible);
+    console.log("visible:", playlistVisible,
+              "has .hidden:", playlist?.classList.contains("hidden"),
+              "inline display:", playlist?.style.display || "(none)");
 }
 
 function toggleAutoDj() {
     useAutoDj = !useAutoDj;
     autoDjBtn.classList.toggle("active", useAutoDj);
     console.log(`useAutoDj=${useAutoDj}`)
+}
+
+function toggleCover() {
+    showBigCover = !showBigCover;
+    document.getElementById("sidebar-cover").classList.toggle("hidden", !showBigCover);
 }
 
 // ----------------- SONG SEARCH ------------------
@@ -331,6 +340,9 @@ function startLocalPlayback() {
     if (!audioPlayer.src.endsWith(currentSong.hash)) {
         audioPlayer.src = api_get_song_url(currentSong.hash);
     }
+    const cover_url = api_get_cover_url(currentSong.cover_hash)
+    document.getElementById("sidebar-cover").innerHTML=`<img src="${cover_url}">`
+    document.getElementById("sidebar-cover").classList.toggle("hidden", !showBigCover);
     setVolume(currentVolume);
     isPlaying = true;
     broadcastCurrentState();
@@ -338,10 +350,10 @@ function startLocalPlayback() {
         console.error("Playback error:", err);
         return;
     });
-    const playPauseBtn = document.getElementById("play-pause-btn");
-    playPauseBtn.innerHTML = `<i data-lucide="pause"></i>`;
+    document.getElementById("play-pause-btn").innerHTML = `<i data-lucide="pause"></i>`;
     lucide.createIcons();
     markPlaying(currentPlayingIndex);
+    showMessage(`Now Playing: ${currentSong.artists} - ${currentSong.title}`)
     if ((currentPlayingIndex + 1 >= playlist.length) && useAutoDj) {
         invokeAutoDJ();
     }
@@ -354,6 +366,7 @@ function stopLocalPlayback() {
     const playPauseBtn = document.getElementById("play-pause-btn");
     playPauseBtn.innerHTML = `<i data-lucide="play"></i>`;
     lucide.createIcons();
+    showMessage("Playback paused")
 }
 
 function initAudioPlayer() {
@@ -412,7 +425,8 @@ async function logout() {
         }
     }
     // Reload window to redirect to login page
-    window.location.reload();
+    const parent_url = window.location.href.split('/').slice(0, -1).join('/');
+    window.location.href = `${parent_url}/login.html`;
 }
 
 

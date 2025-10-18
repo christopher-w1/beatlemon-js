@@ -1,6 +1,11 @@
 /* Main layout */
 
 body, html {
+    --divider-color: #555;
+    --bar-color: #222;
+    --panel-color: #1a1a1a;
+    background-color: #111;
+
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -25,18 +30,18 @@ body, html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #272727;
+    background-color: var(--bar-color);
     padding: 8px;
     padding-inline: 10px;
     margin: 0;
-    border-bottom: 1px solid #777;
+    border-bottom: 1px solid var(--divider-color);
     border-radius: 0px;
     overflow-y: auto;
     width: auto;
 }
 
 #music-browser {
-    background-color: #111;
+    background-color: transparent;
     padding: 16px;
     margin: 0;
     border-radius: 0px;
@@ -47,36 +52,61 @@ body, html {
 }
 
 #playlist {
-    display: flex;
-    flex-direction: column;
-    background-color: #202020;
-    border-left: 1px solid #777;
+    display: grid;
+    gap: 0px; 
+    background-color: var(--panel-color);
+    border-left: 1px solid var(--divider-color);
     padding: 16px;
     margin: 0px;
     width: 270px;
-    min-width: 220px;
-    max-width: 400px;
-    height: auto;
+    grid-template-rows: auto 1fr auto;
 }
+#playlist.hidden { display: none; }
 
 #player-panel {
     grid-column: 1 / -1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #272727;
+    background-color: var(--bar-color);
     padding: 8px;
     padding-inline: 16px;
     margin: 0;
-    border-top: 1px solid #777;
+    border-top: 1px solid var(--divider-color);
     border-radius: 0px;
-    overflow-y: auto;
-    width: auto;
-    margin-bottom: 1px;
+    overflow-y: hidden;
+    align-content: stretch;        
+    justify-content: stretch;
 }
 
 #browser-description {
     margin-bottom: 10px;
+}
+
+#sidebar-cover {
+    grid-row: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    margin-top: 4px;
+    padding: 0;
+    border: 1px solid #333;
+    border-radius: 2px;
+    width: calc(100% - 1px);  
+    height: auto; 
+}
+
+#sidebar-cover.hidden {
+    display: none;
+}
+
+#sidebar-cover img {
+    display: block;
+    width: 100%; 
+    height: auto; 
+    object-fit: contain;
+    border-radius: 2px;
 }
 
 /* -------------- Search Bar -------------- */
@@ -352,16 +382,21 @@ svg {
 
 
 /* ---------------- Playlist Items --------------- */
+#playlist-title {
+    height: fit-content;
+    grid-row: 1;
+    margin-bottom: 8px;
+}
 
 #playlist-item-container {
-    display: flex;
+    display: block;
     flex-direction: column;
-    justify-content: baseline;
     align-items: stretch;
-    padding: 0px;
-    margin-top: 8px;
+    padding-block: 0px;
+    margin: 0px;
     width: 100%;
-    height: 100%;
+    height: auto;
+    min-height: 0;
     overflow-y: auto;
     scrollbar-width: none;   
     -ms-overflow-style: none; 
@@ -488,4 +523,8 @@ svg {
     width: 50%;
     background: #999;
     border-radius: 2px;
+}
+
+.hidden {
+    display: none;
 }
