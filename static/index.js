@@ -89,6 +89,30 @@ function showView(viewId) {
     if (clicked) clicked.classList.add("active");
 }
 
+function setBackgroundColor(tone, saturation, brightness) {
+    const { r, g, b } = hslToRgb(tone, saturation, brightness);
+    document.documentElement.style.setProperty('--background-color', `rgb(${r}, ${g}, ${b})`);
+    document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+}
+
+function updateBackground() {
+    const tone = +document.getElementById('tone-slider').value;
+    const sat = +document.getElementById('saturation-slider').value;
+    const bright = +document.getElementById('brightness-slider').value;
+
+    document.getElementById('tone-val').textContent = tone;
+    document.getElementById('sat-val').textContent = sat;
+    document.getElementById('bright-val').textContent = bright;
+
+    setBackgroundColor(tone, sat, bright);
+    setTheme(bright);
+}
+
+function setTheme(brightness) {
+  const root = document.documentElement;
+  root.dataset.theme = (brightness > 40) ? 'bright' : 'dark';
+}
+
 // ----------------- SONG SEARCH ------------------
 
 function initSearch() {
@@ -505,6 +529,12 @@ function broadcastCurrentState() {
 
 // ---------------- INITIALIZATION ----------------
 
+function initColorControls() {
+    ['tone-slider', 'saturation-slider', 'brightness-slider'].forEach(id =>
+    document.getElementById(id).addEventListener('input', updateBackground)
+);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     updateUserGreeting();
     initVolumeControl();
@@ -512,5 +542,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initAudioPlayer();
     initProgressBar();
     toggleAutoDj();
+    initColorControls();
     apiPing = api_get_ping();
+    setTheme(); // Change this when loading settings is implemented
 });

@@ -83,6 +83,20 @@
             <p>Use lists instead of cards</p>
             <button><i data-lucide="square"></i></button>
         </div>
+        UI Color Tone
+        <div class="settings-block">
+            <label for="tone">Tone</label>
+            <input type="range" id="tone-slider" min="0" max="360" value="220">
+            <div class="value"><span id="tone-val">220</span>°</div>
+        
+            <label for="saturation">Saturation</label>
+            <input type="range" id="saturation-slider" min="0" max="100" value="30">
+            <div class="value"><span id="sat-val">30</span>%</div>
+  
+            <label for="brightness">Brightness</label>
+            <input type="range" id="brightness-slider" min="0" max="100" value="15">
+            <div class="value"><span id="bright-val">15</span>%</div>
+        </div>
     </div>
 
     <div id="player-panel">
@@ -125,6 +139,7 @@
 
   <audio id="audio-player"></audio>
 
+  <script src="static/tools.js"></script>
   <script src="static/index.js"></script>
   <script>lucide.createIcons();</script>
 </body>
