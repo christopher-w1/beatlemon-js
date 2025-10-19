@@ -337,27 +337,59 @@ function renderPlaylist(songs) {
     });
 }
 
+function replacePlaylist(songs) {
+    if (localMode && songs) {
+        stopLocalPlayback();
+        currentPlayingIndex = 0;
+        playlist = [];
+        renderPlaylist(songs);
+        currentSong = playlist[0];
+    }
+}
+
+// -------------- RECOMMENDATIONS ----------------
+
+async function createGenreCard(genre) {
+    try {
+        const songs = await apiGetRecommendationsGenre(genre);
+        if (!songs || !songs.length) {
+            console.warn(`No songs for genre "${genre}" available.`);
+            return;
+        }
+
+        const card = document.createElement("div");
+        card.className = "genre-recommendation";
+        card.innerHTML = `
+            <img src="static/icons8-music.png" alt="">
+            Genre: <b>${genre}</b>
+        `;
+
+        card.onclick = () => replacePlaylist(songs);
+
+        document.getElementById("genre-recommendations").appendChild(card);
+    } catch (err) {
+        console.error(`Error while creating genre card "${genre}":`, err);
+    }
+}
 
 // ----------------- PLAYBACK --------------------
 
-async function startPlaybackFromSong(hash) {
+async function startPlaybackSongHash(hash) {
     if (localMode) {
         stopLocalPlayback();
         // Grab song data
-        let song = await api_get_song_data(hash);
+        const song = await api_get_song_data(hash);
         currentSong = song;
         currentPlayingIndex = 0;
         // Fill playlist
         clearPlaylist();
         addPlaylistItem(song);
-        // Set Audio Player Source
-        audioPlayer.src = api_get_song_url(hash);
         // Play audio
         startLocalPlayback();
     }
 }
 
-async function enqueueSong(hash) {
+async function enqueueSongFromHash(hash) {
     if (localMode) {
         const song = await api_get_song_data(hash);
         if (!song) {
@@ -545,4 +577,10 @@ document.addEventListener("DOMContentLoaded", () => {
     initColorControls();
     apiPing = api_get_ping();
     setTheme(); // Change this when loading settings is implemented
+    const genres = ["Pop", "Rock", "Metal", "RnB",
+        "Electro", "Industrial", "New Wave", "Post-Punk"
+    ];
+    for (const genre of genres) {
+        createGenreCard(genre);
+    }
 });

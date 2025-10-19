@@ -171,3 +171,17 @@ async function apiGetRecommendations(songHash, n = 10) {
     const data = await response.json();
     return data.recommendations || [];
 }
+
+async function apiGetRecommendationsGenre(genre) {
+    if (!genre) throw new Error("Genre is required");
+
+    const url = new URL(`${API_BASE}/songs-from-genre/${genre}`);
+
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+        throw new Error(`Failed to fetch recommendations: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.recommendations || [];
+}

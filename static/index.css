@@ -31,6 +31,7 @@
 }
 
 body, html {
+    --background-color: rgb(23,23,23);
     background-color: var(--background-color);
     color: var(--text-color);
     transition: background-color .3s, color .3s;
@@ -215,7 +216,51 @@ body, html {
     border-radius: 2px;
 }
 
-/* -------------- Search Bar -------------- */
+/* -------------- Recommendations View -------------- */
+
+hr {
+    border-color: var(--divider-color);
+}
+
+#recommendations-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: 16px;
+}
+
+.recommendations-row {
+    display: flex;
+    gap: 16px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.genre-recommendation {
+    max-width: 120px;
+    outline: 1px solid var(--outline-color);
+    background-color: var(--panel-color);
+    border-radius: 4px;
+    padding: 8px;
+    align-items: center;
+    text-align: center;
+    font-size: 14px;
+}
+
+.genre-recommendation img{
+    outline: 1px solid var(--outline-color);
+    background-color: var(--bar-color);
+    display: block;
+    width: 100%; 
+    height: auto; 
+    object-fit: contain;
+    border-radius: 2px;
+    margin-bottom: 8px;
+}
+
+
+/* -------------- Search View -------------- */
 
 #search-panel {
     display: flex;
