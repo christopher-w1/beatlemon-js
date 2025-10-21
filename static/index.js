@@ -319,8 +319,8 @@ async function invokeAutoDJ() {
     if (preventGenreDrift) {
         seed_hash =  playlist[0].hash;
     }
-    const session_key = localStorage.getItem("session_key");
-    let new_songs = await apiGetRecommendations(currentSong.hash, autoDjQueueLength, seed_hash, session_key);
+    const session_id = localStorage.getItem("session_id");
+    let new_songs = await apiGetRecommendations(currentSong.hash, autoDjQueueLength, seed_hash, session_id);
     new_songs = new_songs.slice(0, autoDjQueueLength);
     new_songs.forEach(song => {
         addPlaylistItem(song);
@@ -579,6 +579,7 @@ async function logout() {
         try {
         await apiLogoutUser(session_key);
         localStorage.removeItem("session_key");
+        localStorage.removeItem("session_id");
         localStorage.removeItem("username");
         localStorage.removeItem("email");
         window.location.href = "login.html";
@@ -610,7 +611,7 @@ function broadcastCurrentState() {
         hash = currentSong.hash;
     }
     
-    const sessionId = localStorage.getItem("email") || "default-session";
+    const sessionId = localStorage.getItem("session_id") || "default-session";
     api_update_session(
         hash, 
         currentPlayingIndex,

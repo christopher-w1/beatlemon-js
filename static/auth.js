@@ -49,6 +49,7 @@ async function handleLogin() {
         const result = await apiLoginUser({ email, password });
         console.log("Logged in:", result.username);
         localStorage.setItem("session_key", result.session_key);
+        localStorage.setItem("session_id", result.session_id);
         localStorage.setItem("username", result.username);
         localStorage.setItem("email", result.email);
         show_error("");
@@ -95,6 +96,7 @@ async function handleSignUp() {
 
         console.log("Registered and logged in:", result.username);
         localStorage.setItem("session_key", result.session_key);
+        localStorage.setItem("session_id", result.session_id);
         localStorage.setItem("username", result.username);
         localStorage.setItem("email", result.email);
         show_error("");
