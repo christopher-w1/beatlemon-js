@@ -75,24 +75,39 @@
     </div>
 
     <div id="settings" class="hidden">
-        <div>Settings</div>
+        <div>Appearance Settings</div>
         <div class="settings-item">
             <p>Use lists instead of cards</p>
             <button><i data-lucide="square"></i></button>
         </div>
-        UI Color Tone
         <div class="settings-block">
-            <label for="tone">Tone</label>
+            <label><b>UI Color</b></label> <div></div> <div></div>
+
+            <label for="tone-slider">Tone</label>
             <input type="range" id="tone-slider" min="0" max="360" value="220">
             <div class="value"><span id="tone-val">220</span>°</div>
         
-            <label for="saturation">Saturation</label>
+            <label for="saturation-slider">Saturation</label>
             <input type="range" id="saturation-slider" min="0" max="100" value="30">
             <div class="value"><span id="sat-val">30</span>%</div>
   
-            <label for="brightness">Brightness</label>
+            <label for="brightness-slider">Brightness</label>
             <input type="range" id="brightness-slider" min="0" max="100" value="15">
             <div class="value"><span id="bright-val">15</span>%</div>
+        </div>
+        <div>DJ Settings</div>
+        <div class="settings-item">
+            <p>Prevent genre drift</p>
+            <button><i data-lucide="square"></i></button>
+        </div>
+        <div class="settings-block">
+            <label for="queue-slider">Enqueue songs</label>
+            <input type="range" id="queue-slider" min="1" max="10" value="4">
+            <div class="value"><span id="queue-slider-val">4</span></div>
+
+            <label for="queue-slider">Min. Similarity</label>
+            <input type="range" id="queue-slider" min="1" max="10" value="5">
+            <div class="value"><span id="queue-slider-val">0.5</span></div>
         </div>
     </div>
 
