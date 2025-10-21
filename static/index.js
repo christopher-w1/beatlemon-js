@@ -650,5 +650,5 @@ document.addEventListener("DOMContentLoaded", () => {
     apiPing = api_get_ping();
     setTheme(25);
     createSceneCards();
-    showView("playback-view")
+    showView("recommendations-view")
 });
