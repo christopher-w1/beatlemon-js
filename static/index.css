@@ -1,5 +1,4 @@
 /* Main layout */
-
 :root[data-theme="dark"] {
     --divider-color: rgba(255,255,255,0.20);
     --divider-color-2: rgba(255,255,255,0.15);
@@ -31,10 +30,8 @@
 }
 
 body, html {
-    --background-color: rgb(23,23,23);
     background-color: var(--background-color);
     color: var(--text-color);
-    transition: background-color .3s, color .3s;
 
     box-sizing: border-box;
     margin: 0;
@@ -237,6 +234,13 @@ hr {
     flex-wrap: wrap;
 }
 
+.recommendations-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    justify-content: center;
+    gap: 16px;
+}
+
 .genre-recommendation {
     max-width: 120px;
     outline: 1px solid var(--outline-color);
@@ -304,11 +308,10 @@ hr {
     flex-direction: column;
     gap: 0px;
     margin-top: 16px;
-    color: var(--divider-color);
     background: none;
     padding: 0px;
     overflow-y: auto;
-    margin-bottom: 4px;
+    margin-bottom: 16px;
 }
 
 .search-result {

@@ -18,6 +18,7 @@ let settingsVisible = false;
 let useAutoDj = false;
 let localMode = true;
 let showBigCover = true;
+let preventGenreDrift = true;
 
 
 // ----------------- UI Functions -----------------
@@ -66,7 +67,6 @@ function toggleCover() {
 
 function showView(viewId) {
     const views = [
-        "search-view",
         "recommendations-view",
         "library-view",
         "playback-view"
@@ -130,8 +130,16 @@ function initSearch() {
         const query = searchInput.value.trim();
         if (query.length >= 3) {
             searchForSong(query);
+        } else {
+            clearSearch();
         }
     });
+}
+
+function clearSearch() {
+    const container = document.getElementById("search-results");
+    if (!container) return;
+    container.innerHTML = "";
 }
 
 async function searchForSong(query) {
@@ -146,18 +154,19 @@ async function searchForSong(query) {
 }
 
 function renderSearchResults(results) {
+    clearSearch();
     const container = document.getElementById("search-results");
-    if (!container) return;
-
-    container.innerHTML = "";
-
+    
+    const searchMsg = document.createElement("div");
     if (!results || results.length === 0) {
-        const emptyMsg = document.createElement("div");
-        emptyMsg.textContent = "No results found.";
-        emptyMsg.style.opacity = "0.7";
-        container.appendChild(emptyMsg);
+        searchMsg.textContent = "No results found.";
+        searchMsg.style.opacity = "0.5";
+        container.appendChild(searchMsg);
         return;
+    } else {
+        searchMsg.textContent = "Search Results";
     }
+    container.appendChild(searchMsg);
 
     results.forEach((song, index) => {
         const el = document.createElement("div");
@@ -185,8 +194,8 @@ function renderSearchResults(results) {
         </div>
         <div class="duration">${duration}</div>
         <div class="button-row">
-            <button class="mini-btn" title="Play" onclick=startPlaybackFromSong("${song.hash}")><i data-lucide="play">P</i></button>
-            <button class="mini-btn" title="Add"  onclick=enqueueSong("${song.hash}")><i data-lucide="plus">+</i></button>
+            <button class="mini-btn" title="Play" onclick=startPlaybackSongHash("${song.hash}")><i data-lucide="play">P</i></button>
+            <button class="mini-btn" title="Add"  onclick=enqueueSongFromHash("${song.hash}")><i data-lucide="plus">+</i></button>
             <button class="mini-btn" title="Info"><i data-lucide="info">i</i></button>
         </div>
         <div class="classic-info">
@@ -296,7 +305,14 @@ function skipToSong(index) {
 }
 
 async function invokeAutoDJ() {
-    let new_songs = await apiGetRecommendations(currentSong.hash, 4);
+    if (!currentSong || !playlist) {
+        return;
+    }
+    let seed_hash = null;
+    if (preventGenreDrift) {
+        seed_hash =  playlist[0].hash;
+    }
+    let new_songs = await apiGetRecommendations(currentSong.hash, 4, seed_hash);
     new_songs.forEach(song => {
         addPlaylistItem(song);
     });
@@ -370,6 +386,35 @@ async function createGenreCard(genre) {
     } catch (err) {
         console.error(`Error while creating genre card "${genre}":`, err);
     }
+}
+
+async function createSceneCards() {
+    try {
+        const allRecommendations = await apiGetRecommendationsByScene();
+
+        for (const [scene, songs] of Object.entries(allRecommendations)) {
+            if (!songs.length) continue;
+            const first_song = songs[0];
+            const img_url = api_get_cover_url(first_song.cover_hash);
+
+            const card = document.createElement("div");
+            card.className = "genre-recommendation";
+            card.innerHTML = `
+                <img src="${img_url}">
+                <b>${capitalize(scene)}</b>
+            `;
+
+            card.onclick = () => replacePlaylist(songs);
+
+            document.getElementById("genre-recommendations").appendChild(card);
+        }
+    } catch (err) {
+        console.error("Error while creating genre cards:", err);
+    }
+}
+
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // ----------------- PLAYBACK --------------------
@@ -564,8 +609,18 @@ function broadcastCurrentState() {
 function initColorControls() {
     ['tone-slider', 'saturation-slider', 'brightness-slider'].forEach(id =>
     document.getElementById(id).addEventListener('input', updateBackground)
-);
+    );
 }
+
+async function createGenreCards() {
+    const genres = ["Pop", "Rock", "Metal", "RnB",
+        "Electro", "Industrial", "Dark Wave", "Post Punk"
+    ];
+    for (const genre of genres) {
+        await createGenreCard(genre);
+    }
+}
+    
 
 document.addEventListener("DOMContentLoaded", () => {
     updateUserGreeting();
@@ -576,11 +631,6 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleAutoDj();
     initColorControls();
     apiPing = api_get_ping();
-    setTheme(); // Change this when loading settings is implemented
-    const genres = ["Pop", "Rock", "Metal", "RnB",
-        "Electro", "Industrial", "New Wave", "Post-Punk"
-    ];
-    for (const genre of genres) {
-        createGenreCard(genre);
-    }
+    setTheme(25);
+    createSceneCards();
 });

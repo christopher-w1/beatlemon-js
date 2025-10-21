@@ -19,9 +19,6 @@
             <button id="browse-music-btn" onclick="showView('recommendations-view')">
             <i data-lucide="compass">Browse</i> 
             </button>
-            <button id="show-search-btn" onclick="showView('search-view')">
-            <i data-lucide="search">Search</i> 
-            </button>
             <button id="show-library-btn" onclick="showView('library-view')">
             <i data-lucide="library">Library</i> 
             </button>
@@ -42,11 +39,7 @@
     
 
     <div id="music-browser">
-        <div id="search-view" class="hidden">
-            <div id="browser-description">
-                Search the Library
-            </div>
-            <div id="search-panel">
+        <div id="search-panel">
                 <div id="search-bar">
                     <input id="search-input" placeholder="Find a song...">
                     <button id="search-button">
@@ -57,8 +50,6 @@
             <div id="search-results">
 
             </div>
-        </div>
-
         <div id="recommendations-view">
             <div id="recommendations-container">
                 Listen to a Genre...

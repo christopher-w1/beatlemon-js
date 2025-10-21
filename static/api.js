@@ -158,11 +158,13 @@ async function apiGetSession(sessionId) {
 }
 
 
-async function apiGetRecommendations(songHash, n = 10) {
+async function apiGetRecommendations(songHash, n = 10, songSeed=null) {
     if (!songHash) throw new Error("songHash is required");
 
     const url = new URL(`${API_BASE}/recommendations/${songHash}`);
-
+    if (songSeed) {
+        url.searchParams.append("seed_hash", songSeed);
+    }
     const response = await fetch(url.toString());
     if (!response.ok) {
         throw new Error(`Failed to fetch recommendations: ${response.status}`);
@@ -184,4 +186,16 @@ async function apiGetRecommendationsGenre(genre) {
 
     const data = await response.json();
     return data.recommendations || [];
+}
+
+async function apiGetRecommendationsByScene() {
+    const url = new URL(`${API_BASE}/recommendations-by-scene/10`);
+
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+        throw new Error(`Failed to fetch recommendations: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.recommendations || {};
 }
