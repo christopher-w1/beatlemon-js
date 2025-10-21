@@ -158,12 +158,15 @@ async function apiGetSession(sessionId) {
 }
 
 
-async function apiGetRecommendations(songHash, n = 10, songSeed=null) {
+async function apiGetRecommendations(songHash, n = 10, songSeed=null, sessionId=null) {
     if (!songHash) throw new Error("songHash is required");
 
     const url = new URL(`${API_BASE}/recommendations/${songHash}`);
     if (songSeed) {
         url.searchParams.append("seed_hash", songSeed);
+    }
+    if (sessionId) {
+        url.searchParams.append("session_id", sessionId);
     }
     const response = await fetch(url.toString());
     if (!response.ok) {

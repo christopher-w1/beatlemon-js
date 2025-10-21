@@ -319,7 +319,8 @@ async function invokeAutoDJ() {
     if (preventGenreDrift) {
         seed_hash =  playlist[0].hash;
     }
-    let new_songs = await apiGetRecommendations(currentSong.hash, autoDjQueueLength, seed_hash);
+    const session_key = localStorage.getItem("session_key");
+    let new_songs = await apiGetRecommendations(currentSong.hash, autoDjQueueLength, seed_hash, session_key);
     new_songs = new_songs.slice(0, autoDjQueueLength);
     new_songs.forEach(song => {
         addPlaylistItem(song);
