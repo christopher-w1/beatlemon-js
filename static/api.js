@@ -188,6 +188,20 @@ async function apiGetRecommendationsGenre(genre) {
     return data.recommendations || [];
 }
 
+async function apiGetLyrics(song_hash) {
+    if (!song_hash) throw new Error("Genre is required");
+
+    const url = new URL(`${API_BASE}/lyrics/${song_hash}`);
+
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+        return `<i>Failed to fetch lyrics: ${response.status}</i>`;
+    }
+
+    const data = await response.json();
+    return data.lyrics || null;
+}
+
 async function apiGetRecommendationsByScene() {
     const url = new URL(`${API_BASE}/recommendations-by-scene/10`);
 

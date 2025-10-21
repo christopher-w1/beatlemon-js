@@ -28,7 +28,7 @@
         </div>
         <span id="user-greeting">Hello, <b class="user-name">unknown user</b><b>!</b></span>
         <div class="button-row">
-            <button id="settings-btn" onclick="toggleSettings()">
+            <button id="toggle-settings-btn" onclick="toggleSettings()">
                 <i data-lucide="settings">Settings</i>
             </button>
             <button id="logout-btn" onclick="logout()">
@@ -61,6 +61,8 @@
         </div>
 
         <div id="playback-view" class="hidden">
+            <div id="playback-cover"><img src="static/icons8-music.png"></div>
+            <div id="lyrics"></div>
         </div>
     </div>
 
@@ -135,6 +137,7 @@
   <audio id="audio-player"></audio>
 
   <script src="static/tools.js"></script>
+  <script src="static/lyrics.js"></script>
   <script src="static/index.js"></script>
   <script>lucide.createIcons();</script>
 </body>

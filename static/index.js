@@ -42,6 +42,11 @@ function togglePlaylist() {
     console.log("visible:", playlistVisible,
               "has .hidden:", playlist?.classList.contains("hidden"),
               "inline display:", playlist?.style.display || "(none)");
+    if (playlistVisible) {
+        settingsVisible = false;
+        document.getElementById("settings").classList.toggle("hidden", !settingsVisible);
+        document.getElementById("toggle-settings-btn").classList.toggle("active", settingsVisible);
+    }
 }
 
 function toggleSettings() {
@@ -52,7 +57,7 @@ function toggleSettings() {
         document.getElementById("playlist").classList.toggle("hidden", !playlistVisible);
     }
     document.getElementById("settings").classList.toggle("hidden", !settingsVisible);
-
+    document.getElementById("toggle-settings-btn").classList.toggle("active", settingsVisible);
 }
 
 function toggleAutoDj() {
@@ -124,6 +129,8 @@ function initSearch() {
         const query = searchInput.value.trim();
         if (query.length >= 3) {
             searchForSong(query);
+        } else {
+            clearSearch();
         }
     });
 
@@ -300,7 +307,6 @@ function skipToSong(index) {
         stopLocalPlayback();
         currentPlayingIndex = index;
         currentSong = song;
-        markPlaying(currentPlayingIndex);
         startLocalPlayback();
     }
 }
@@ -486,9 +492,11 @@ function startLocalPlayback() {
     }
     if (!audioPlayer.src.endsWith(currentSong.hash)) {
         audioPlayer.src = api_get_song_url(currentSong.hash);
+        updateLyrics();
     }
     const cover_url = api_get_cover_url(currentSong.cover_hash)
     document.getElementById("sidebar-cover").innerHTML=`<img src="${cover_url}">`
+    document.getElementById("playback-cover").innerHTML=`<img src="${cover_url}">`
     document.getElementById("sidebar-cover").classList.toggle("hidden", !showBigCover);
     setVolume(currentVolume);
     isPlaying = true;
@@ -504,6 +512,12 @@ function startLocalPlayback() {
     if ((currentPlayingIndex + 1 >= playlist.length) && useAutoDj) {
         invokeAutoDJ();
     }
+}
+
+async function updateLyrics() {
+    const lyrics = await externalGetLyrics(currentSong.artists.split(",")[0], currentSong.title);
+    document.getElementById("lyrics").innerHTML =
+    lyrics ? lyrics.replace(/\n/g, "<br>") : "<i>No lyrics available.</i>";
 }
 
 function stopLocalPlayback() {
@@ -635,4 +649,5 @@ document.addEventListener("DOMContentLoaded", () => {
     apiPing = api_get_ping();
     setTheme(25);
     createSceneCards();
+    showView("playback-view")
 });

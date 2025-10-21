@@ -687,6 +687,41 @@ svg {
     margin: 0px;
 }
 
+/* --------------------- Playback View ---------------------- */
+
+#playback-cover {
+grid-row: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    margin-top: 4px;
+    padding: 0;
+    border: 1px solid var(--divider-color-2);
+    border-radius: 4px;
+    width: calc(100% - 2px);  
+    height: auto; 
+    max-height: calc(100vh - 186px);
+    overflow: hidden;
+}
+
+#playback-cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: calc(100vh - 186px);
+    object-fit: contain;
+    border-radius: 3px;
+}
+
+#lyrics {
+    width: 100%;
+    margin: 16px;
+    font-size: 14px;
+    text-align: center;
+    color: var(--text-color-2)
+}
+
 /* ------------------ Playback Control Bar ------------------ */
 #progress-container {
     position: relative;
