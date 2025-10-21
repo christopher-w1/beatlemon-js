@@ -16,6 +16,7 @@ let currentSong = null;
 let playlistVisible = true;
 let settingsVisible = false;
 let useAutoDj = false;
+let autoDjQueueLength = 4;
 let localMode = true;
 let showBigCover = true;
 let preventGenreDrift = true;
@@ -312,7 +313,8 @@ async function invokeAutoDJ() {
     if (preventGenreDrift) {
         seed_hash =  playlist[0].hash;
     }
-    let new_songs = await apiGetRecommendations(currentSong.hash, 4, seed_hash);
+    let new_songs = await apiGetRecommendations(currentSong.hash, autoDjQueueLength, seed_hash);
+    new_songs = new_songs.slice(0, autoDjQueueLength);
     new_songs.forEach(song => {
         addPlaylistItem(song);
     });
